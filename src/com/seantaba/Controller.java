@@ -1,4 +1,4 @@
-package sample;
+package com.seantaba;
 
 public class Controller {
 }
