@@ -7,10 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -24,7 +21,11 @@ public class Controller {
     @FXML
     private MenuItem menuConnect;
     @FXML
+    private MenuItem menuDisconnect;
+    @FXML
     private Button testButton;
+    @FXML
+    private Label statusLabel;
 
     @FXML
     public void menuActionHandler(ActionEvent event) throws Exception {
@@ -34,6 +35,20 @@ public class Controller {
         } else if (event.getSource().equals(menuConnect))
         {
             launchConnectWindow();
+        } else if (event.getSource().equals(menuDisconnect))
+        {
+            if (port.isOpen())
+            {
+                if (port.closePort())
+                {
+                    statusLabel.setText("Not Connected!");
+                    menuConnect.setDisable(false);
+                    menuDisconnect.setDisable(true);
+                } else
+                {
+                    System.out.println("Unable to close the port!");
+                }
+            }
         }
     }
 
@@ -49,10 +64,34 @@ public class Controller {
         primaryStage.initOwner(testButton.getScene().getWindow());
         primaryStage.initModality(Modality.WINDOW_MODAL);
         primaryStage.showAndWait();
+        if (connect())
+        {
+            statusLabel.setText("Connected!");
+            menuConnect.setDisable(true);
+            menuDisconnect.setDisable(false);
+        } else
+        {
+            statusLabel.setText("Not Connected!");
+            menuConnect.setDisable(false);
+            menuDisconnect.setDisable(true);
+        }
+    }
 
+    public boolean connect()
+    {
+        if (port != null)
+        {
+            return port.openPort();
+        }
+        return false;
     }
 
     public SerialPort getPort() {
         return port;
+    }
+
+    public void setPort(SerialPort port)
+    {
+        this.port = port;
     }
 }

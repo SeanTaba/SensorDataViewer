@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.ListView?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.seantaba.ConnectionController"
-            prefHeight="150" prefWidth="300">
+            prefHeight="150" prefWidth="300" style="-fx-padding: 10 10 10 10">
 
     <center>
-        <TextArea fx:id="textArea"/>
+        <ListView fx:id="listView"/>
     </center>
     <bottom>
-        <HBox>
+        <HBox prefHeight="30" style="-fx-padding: 10 10 0 0">
             <Button fx:id="buttonCancel" text="Cancel" onAction="#buttonHandler"/>
+            <Button fx:id="buttonConnect" text="Connect" onAction="#buttonHandler" disable="true"/>
         </HBox>
     </bottom>
 

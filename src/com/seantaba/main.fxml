@@ -9,10 +9,12 @@
             <MenuBar>
                 <Menu text="Connect">
                     <MenuItem fx:id="menuConnect" text="Connect to Port..." onAction="#menuActionHandler"/>
+                    <MenuItem fx:id="menuDisconnect" text="Disconnect from port..." disable="true" onAction="#menuActionHandler"/>
                     <SeparatorMenuItem/>
                     <MenuItem fx:id="menuExit" text="Exit" onAction="#menuActionHandler"/>
                 </Menu>
             </MenuBar>
+            <Label fx:id="statusLabel" />
         </HBox>
     </top>
     <center>

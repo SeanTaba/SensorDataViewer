@@ -1,14 +1,17 @@
 package com.seantaba;
 
 import com.fazecast.jSerialComm.SerialPort;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
-public class ConnectionController {
+public class ConnectionController
+{
 
     private SerialPort port;
     private SerialPort[] availablePorts = SerialPort.getCommPorts();
@@ -16,22 +19,35 @@ public class ConnectionController {
     @FXML
     private Button buttonCancel;
     @FXML
-    private TextArea textArea;
+    private Button buttonConnect;
+    @FXML
+    private ListView<SerialPort> listView;
 
     public void initialize()
     {
-        //port = ((Controller) buttonCancel.getScene().getUserData()).getPort();
-        if (availablePorts.length == 0)
+        if (availablePorts.length > 0) buttonConnect.setDisable(false);
+        ObservableList<SerialPort> ports = FXCollections.observableArrayList(availablePorts);
+        listView.setItems(ports);
+        listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        listView.getSelectionModel().selectFirst();
+        listView.setCellFactory(param -> new ListCell<>()
         {
-            textArea.setText("No Available COM Ports");
-        } else
-        {
-            for (SerialPort port :
-                    availablePorts) {
-                textArea.appendText(port.getDescriptivePortName() + "\n");
+            @Override
+            protected void updateItem(SerialPort item, boolean empty)
+            {
+                super.updateItem(item, empty);
+                if (empty)
+                {
+                    setText(null);
+                } else
+                {
+                    setText(item.getDescriptivePortName());
+                }
             }
-        }
+        });
+
     }
+
 
     public void buttonHandler(ActionEvent event)
     {
@@ -40,6 +56,15 @@ public class ConnectionController {
             Scene scene = buttonCancel.getScene();
             Stage stage = (Stage) scene.getWindow();
             stage.close();
+        } else if (event.getSource().equals(buttonConnect))
+        {
+            port = listView.getSelectionModel().getSelectedItem();
+            if (port != null)
+            {
+                Controller mainController = (Controller) buttonConnect.getScene().getUserData();
+                mainController.setPort(port);
+            }
+            ((Stage) buttonConnect.getScene().getWindow()).close();
         }
     }
 }
