@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.seantaba.TerminalController"
+            prefHeight="400.0" prefWidth="600.0" style="-fx-padding: 10 10 10 10">
+
+<center>
+    <TextArea fx:id="textArea" editable="false"/>
+</center>
+    <right>
+        <VBox style="-fx-padding: 10 10 10 10; -fx-spacing: 5" >
+            <CheckBox fx:id="checkBoxNone" text="No NL &amp; CR"/>
+            <CheckBox fx:id="checkBoxNL" text="NL"/>
+            <CheckBox fx:id="checkBoxCR" text="CR"/>
+            <CheckBox fx:id="checkBoxBoth" text="Nl &amp; CR"/>
+            <CheckBox fx:id="checkBoxAS" text="Auto Scroll"/>
+
+
+        </VBox>
+    </right>
+    <bottom>
+        <HBox style="-fx-padding: 10 10 0 0; -fx-spacing: 10">
+            <ComboBox fx:id="comboBoxSend" editable="true" prefWidth="150"/>
+            <Button fx:id="sendButton" text="Send" prefWidth="80"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

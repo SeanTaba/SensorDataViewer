@@ -30,9 +30,10 @@ public class Main extends Application {
     @Override
     public void stop() throws Exception
     {
-        if (controller.getPort().isOpen())
-        {
-            controller.getPort().closePort();
+        if (controller.getPort() != null) {
+            if (controller.getPort().isOpen()) {
+                controller.getPort().closePort();
+            }
         }
         super.stop();
     }

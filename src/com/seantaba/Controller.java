@@ -23,6 +23,8 @@ public class Controller {
     @FXML
     private MenuItem menuDisconnect;
     @FXML
+    private MenuItem menuTerminal;
+    @FXML
     private Button testButton;
     @FXML
     private Label statusLabel;
@@ -44,11 +46,15 @@ public class Controller {
                     statusLabel.setText("Not Connected!");
                     menuConnect.setDisable(false);
                     menuDisconnect.setDisable(true);
+                    menuTerminal.setDisable(true);
                 } else
                 {
                     System.out.println("Unable to close the port!");
                 }
             }
+        } else if (event.getSource().equals(menuTerminal))
+        {
+            launchTerminalWindow();
         }
     }
 
@@ -56,25 +62,37 @@ public class Controller {
     {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("connection.fxml"));
         Parent root = fxmlLoader.load();
-        Stage primaryStage = new Stage();
-        primaryStage.setTitle("Connect to a Port");
+        Stage stage = new Stage();
+        stage.setTitle("Connect to a Port");
         Scene scene = new Scene(root);
         scene.setUserData(testButton.getScene().getUserData());
-        primaryStage.setScene(scene);
-        primaryStage.initOwner(testButton.getScene().getWindow());
-        primaryStage.initModality(Modality.WINDOW_MODAL);
-        primaryStage.showAndWait();
+        stage.setScene(scene);
+        stage.initOwner(testButton.getScene().getWindow());
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.showAndWait();
         if (connect())
         {
             statusLabel.setText("Connected!");
             menuConnect.setDisable(true);
             menuDisconnect.setDisable(false);
+            menuTerminal.setDisable(false);
         } else
         {
             statusLabel.setText("Not Connected!");
             menuConnect.setDisable(false);
             menuDisconnect.setDisable(true);
+            menuTerminal.setDisable(true);
         }
+    }
+    public void launchTerminalWindow() throws Exception
+    {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("terminal.fxml"));
+        Parent root = fxmlLoader.load();
+        Stage stage = new Stage();
+        stage.setTitle("Serial Monitor");
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     public boolean connect()
