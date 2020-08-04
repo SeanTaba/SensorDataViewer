@@ -10,25 +10,10 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 
-import com.fazecast.jSerialComm.SerialPort;
-import javafx.fxml.FXML;
-import javafx.scene.control.TextArea;
-
 public class TerminalController {
     @FXML
     private TextArea textArea;
     private Thread terminalTaskThread;
-
-    public void runTerminalTask()
-    {
-        terminalTaskThread = new Thread(new TerminalTask((SerialPort) textArea.getScene().getUserData(), textArea));
-        terminalTaskThread.start();
-    }
-    public void stopTerminalTask()
-    {
-        terminalTaskThread.interrupt();
-    }
-
     @FXML
     private Button sendButton;
     @FXML
@@ -37,8 +22,7 @@ public class TerminalController {
     private ComboBox<String> optionsComboBox;
     @FXML
     private CheckBox ASCheckBox;
-    @FXML
-    private TextArea textArea;
+
     private final ObservableList<String> sendComboBoxList = FXCollections.observableArrayList();
     private SerialPort port;
 
@@ -60,5 +44,15 @@ public class TerminalController {
             str += postFix;
             port.writeBytes(str.getBytes(), str.length());
         }
+    }
+
+    public void runTerminalTask()
+    {
+        terminalTaskThread = new Thread(new TerminalTask((SerialPort) textArea.getScene().getUserData(), textArea));
+        terminalTaskThread.start();
+    }
+    public void stopTerminalTask()
+    {
+        terminalTaskThread.interrupt();
     }
 }
