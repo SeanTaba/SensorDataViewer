@@ -29,6 +29,7 @@ public class Controller {
     @FXML
     private Label statusLabel;
 
+
     @FXML
     public void menuActionHandler(ActionEvent event) throws Exception {
         if (event.getSource().equals(menuExit))
@@ -90,9 +91,12 @@ public class Controller {
         Parent root = fxmlLoader.load();
         Stage stage = new Stage();
         stage.setTitle("Serial Monitor");
+        TerminalController controller = fxmlLoader.getController();
         Scene scene = new Scene(root);
         scene.setUserData(port);
         stage.setScene(scene);
+        stage.setOnHidden(event -> controller.stopTerminalTask());
+        controller.runTerminalTask();
         stage.show();
     }
 
