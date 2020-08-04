@@ -9,6 +9,7 @@
 <?import java.lang.String?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.seantaba.TerminalController"
@@ -18,20 +19,25 @@
     <TextArea fx:id="textArea" editable="false"/>
 </center>
     <right>
-        <VBox style="-fx-padding: 10 10 10 10; -fx-spacing: 5" >
-            <CheckBox fx:id="checkBoxNone" text="No NL &amp; CR"/>
-            <CheckBox fx:id="checkBoxNL" text="NL"/>
-            <CheckBox fx:id="checkBoxCR" text="CR"/>
-            <CheckBox fx:id="checkBoxBoth" text="Nl &amp; CR"/>
-            <CheckBox fx:id="checkBoxAS" text="Auto Scroll"/>
 
-
-        </VBox>
     </right>
     <bottom>
-        <HBox style="-fx-padding: 10 10 0 0; -fx-spacing: 10">
-            <ComboBox fx:id="comboBoxSend" editable="true" prefWidth="150"/>
-            <Button fx:id="sendButton" text="Send" prefWidth="80"/>
+        <HBox style="-fx-padding: 10 10 0 0; -fx-spacing: 10" alignment="CENTER">
+            <ComboBox fx:id="sendComboBox" editable="true" prefWidth="150"/>
+            <Button fx:id="sendButton" text="Send" prefWidth="80" onAction="#buttonActionHandler"/>
+            <Label prefWidth="90"/>
+            <ComboBox fx:id="optionsComboBox" prefWidth="120" value="No NL or CR">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="No NL or CR"/>
+                        <String fx:value="NL"/>
+                        <String fx:value="CR"/>
+                        <String fx:value="NL and CR"/>
+                    </FXCollections>
+                </items>
+            </ComboBox>
+            <Label prefWidth="5"/>
+            <CheckBox fx:id="ASCheckBox" text="Auto Scroll"/>
         </HBox>
     </bottom>
 

@@ -91,6 +91,7 @@ public class Controller {
         Stage stage = new Stage();
         stage.setTitle("Serial Monitor");
         Scene scene = new Scene(root);
+        scene.setUserData(port);
         stage.setScene(scene);
         stage.show();
     }
