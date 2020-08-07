@@ -5,13 +5,42 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import java.lang.String?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.seantaba.TerminalController"
             prefHeight="400.0" prefWidth="600.0" style="-fx-padding: 10 10 10 10">
 
 <center>
-    <TextArea fx:id="textArea" editable="false" />
+    <TableView fx:id="tableView">
+        <columns>
+            <TableColumn text="Time" prefWidth="${tableView.width * 0.20}">
+                <cellValueFactory>
+                    <PropertyValueFactory property="time"/>
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Sensor1" prefWidth="${tableView.width * 0.20}">
+                <cellValueFactory>
+                    <PropertyValueFactory property="Sensor1"/>
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Sensor2" prefWidth="${tableView.width * 0.20}">
+                <cellValueFactory>
+                    <PropertyValueFactory property="Sensor2"/>
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Sensor3" prefWidth="${tableView.width * 0.20}">
+                <cellValueFactory>
+                    <PropertyValueFactory property="Sensor3"/>
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Sensor4" prefWidth="${tableView.width * 0.20}">
+                <cellValueFactory>
+                    <PropertyValueFactory property="Sensor4"/>
+                </cellValueFactory>
+            </TableColumn>
+        </columns>
+    </TableView>
 </center>
     <bottom>
         <HBox style="-fx-padding: 10 10 0 0; -fx-spacing: 10" alignment="CENTER">

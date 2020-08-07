@@ -2,18 +2,18 @@ package com.seantaba;
 
 import com.fazecast.jSerialComm.SerialPort;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.TableView;
 
 public class TerminalController {
     @FXML
-    private TextArea textArea;
-    private Thread terminalTaskThread;
+    private TableView<DataModel> tableView;
     @FXML
     private Button sendButton;
     @FXML
@@ -23,11 +23,20 @@ public class TerminalController {
     @FXML
     private CheckBox ASCheckBox;
 
+    private Thread terminalTaskThread;
+    private final ObservableList<DataModel> received = FXCollections.observableArrayList();
     private final ObservableList<String> sendComboBoxList = FXCollections.observableArrayList();
     private SerialPort port;
 
     public void initialize() {
         sendComboBox.setItems(sendComboBoxList);
+        tableView.setItems(received);
+        received.addListener((ListChangeListener<? super DataModel>) listener -> {
+            if (ASCheckBox.isSelected())
+            {
+                tableView.scrollTo(tableView.getItems().size());
+            }
+        });
     }
 
     public void buttonActionHandler(ActionEvent event) {
@@ -47,7 +56,7 @@ public class TerminalController {
 
     public void runTerminalTask()
     {
-        terminalTaskThread = new Thread(new TerminalTask(port, textArea));
+        terminalTaskThread = new Thread(new TerminalTask(port, received));
         terminalTaskThread.start();
     }
     public void stopTerminalTask()
