@@ -11,6 +11,8 @@ import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 
 public class Controller {
 
@@ -85,15 +87,15 @@ public class Controller {
             menuTerminal.setDisable(true);
         }
     }
-    public void launchTerminalWindow() throws Exception
+    public void launchTerminalWindow() throws IOException
     {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("terminal.fxml"));
         Parent root = fxmlLoader.load();
         Stage stage = new Stage();
         stage.setTitle("Serial Monitor");
         TerminalController controller = fxmlLoader.getController();
+        controller.setPort(port);
         Scene scene = new Scene(root);
-        scene.setUserData(port);
         stage.setScene(scene);
         stage.setOnHidden(event -> controller.stopTerminalTask());
         controller.runTerminalTask();

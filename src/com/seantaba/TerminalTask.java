@@ -25,6 +25,10 @@ public class TerminalTask extends Task<Void>
         {
             try
             {
+                if (!port.isOpen())
+                {
+                    run = false;
+                }
                 if (port.bytesAvailable() > 0)
                 {
                     byte[] data = new byte[port.bytesAvailable()];
@@ -41,6 +45,5 @@ public class TerminalTask extends Task<Void>
         System.out.println("TerminalTask was stopped");
         return null;
     }
-
 
 }

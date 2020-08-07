@@ -28,13 +28,12 @@ public class TerminalController {
 
     public void initialize() {
         sendComboBox.setItems(sendComboBoxList);
-        port = (SerialPort) textArea.getScene().getUserData();
     }
 
     public void buttonActionHandler(ActionEvent event) {
         if (!sendComboBox.getSelectionModel().getSelectedItem().equals("")) {
             String str = sendComboBox.getValue();
-            sendComboBoxList.add(str);
+            if (!sendComboBoxList.contains(str)) sendComboBoxList.add(str);
             String postFix = switch (optionsComboBox.getValue()) {
                 case "NL" -> "\n";
                 case "CR" -> "\r";
@@ -48,11 +47,16 @@ public class TerminalController {
 
     public void runTerminalTask()
     {
-        terminalTaskThread = new Thread(new TerminalTask((SerialPort) textArea.getScene().getUserData(), textArea));
+        terminalTaskThread = new Thread(new TerminalTask(port, textArea));
         terminalTaskThread.start();
     }
     public void stopTerminalTask()
     {
         terminalTaskThread.interrupt();
+    }
+
+    public void setPort(SerialPort port)
+    {
+        this.port = port;
     }
 }

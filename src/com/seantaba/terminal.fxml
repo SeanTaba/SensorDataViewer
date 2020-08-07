@@ -1,31 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.collections.FXCollections?>
-<?import java.lang.String?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
+<?import java.lang.String?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.seantaba.TerminalController"
             prefHeight="400.0" prefWidth="600.0" style="-fx-padding: 10 10 10 10">
 
 <center>
-    <TextArea fx:id="textArea" editable="false"/>
+    <TextArea fx:id="textArea" editable="false" />
 </center>
-    <right>
-
-    </right>
     <bottom>
         <HBox style="-fx-padding: 10 10 0 0; -fx-spacing: 10" alignment="CENTER">
             <ComboBox fx:id="sendComboBox" editable="true" prefWidth="150"/>
             <Button fx:id="sendButton" text="Send" prefWidth="80" onAction="#buttonActionHandler"/>
-            <Label prefWidth="90"/>
+            <Label prefWidth="85"/>
             <ComboBox fx:id="optionsComboBox" prefWidth="120" value="No NL or CR">
                 <items>
                     <FXCollections fx:factory="observableArrayList">
