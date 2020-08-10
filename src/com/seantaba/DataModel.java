@@ -2,7 +2,10 @@ package com.seantaba;
 
 import javafx.beans.property.SimpleStringProperty;
 
-public class DataModel {
+import java.io.Serializable;
+
+public class DataModel implements Serializable
+{
     private final SimpleStringProperty time;
     private final SimpleStringProperty sensor1;
     private final SimpleStringProperty sensor2;

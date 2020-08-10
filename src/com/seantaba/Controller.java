@@ -2,6 +2,8 @@ package com.seantaba;
 
 import com.fazecast.jSerialComm.SerialPort;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +19,8 @@ import java.io.IOException;
 public class Controller {
 
     private SerialPort port;
+    private final ObservableList<DataModel> data = FXCollections.observableArrayList();
+    private SerialPortReceiverTask receiverTask;
 
     @FXML
     private MenuItem menuExit;
@@ -95,10 +99,9 @@ public class Controller {
         stage.setTitle("Serial Monitor");
         TerminalController controller = fxmlLoader.getController();
         controller.setPort(port);
+        controller.setReceived(data);
         Scene scene = new Scene(root);
         stage.setScene(scene);
-        stage.setOnHidden(event -> controller.stopTerminalTask());
-        controller.runTerminalTask();
         stage.show();
     }
 
@@ -106,7 +109,12 @@ public class Controller {
     {
         if (port != null)
         {
-            return port.openPort();
+            if (port.openPort())
+            {
+                receiverTask = new SerialPortReceiverTask(port, data);
+                new Thread(receiverTask).start();
+                return true;
+            }
         }
         return false;
     }

@@ -4,6 +4,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.seantaba.ConnectionController"
@@ -13,9 +14,9 @@
         <ListView fx:id="listView"/>
     </center>
     <bottom>
-        <HBox prefHeight="30" style="-fx-padding: 10 10 0 0">
-            <Button fx:id="buttonCancel" text="Cancel" onAction="#buttonHandler"/>
-            <Button fx:id="buttonConnect" text="Connect" onAction="#buttonHandler" disable="true"/>
+        <HBox prefHeight="30" style="-fx-padding: 10 0 0 0" spacing="160">
+            <Button fx:id="buttonCancel" text="Cancel" onAction="#buttonHandler" prefWidth="60"/>
+            <Button fx:id="buttonConnect" text="Connect" onAction="#buttonHandler" disable="true" prefWidth="60"/>
         </HBox>
     </bottom>
 

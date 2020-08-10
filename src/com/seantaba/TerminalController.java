@@ -1,7 +1,6 @@
 package com.seantaba;
 
 import com.fazecast.jSerialComm.SerialPort;
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,21 +22,15 @@ public class TerminalController {
     @FXML
     private CheckBox ASCheckBox;
 
-    private Thread terminalTaskThread;
-    private final ObservableList<DataModel> received = FXCollections.observableArrayList();
-    private final ObservableList<String> sendComboBoxList = FXCollections.observableArrayList();
+    private ObservableList<DataModel> received;
+    private ObservableList<String> sendComboBoxList;
     private SerialPort port;
 
     public void initialize() {
         sendComboBox.setItems(sendComboBoxList);
-        tableView.setItems(received);
-        received.addListener((ListChangeListener<? super DataModel>) listener -> {
-            if (ASCheckBox.isSelected())
-            {
-                tableView.scrollTo(tableView.getItems().size());
-            }
-        });
     }
+
+
 
     public void buttonActionHandler(ActionEvent event) {
         if (!sendComboBox.getSelectionModel().getSelectedItem().equals("")) {
@@ -54,14 +47,15 @@ public class TerminalController {
         }
     }
 
-    public void runTerminalTask()
-    {
-        terminalTaskThread = new Thread(new TerminalTask(port, received));
-        terminalTaskThread.start();
-    }
-    public void stopTerminalTask()
-    {
-        terminalTaskThread.interrupt();
+    public void setReceived(ObservableList<DataModel> received) {
+        this.received = received;
+        tableView.setItems(received);
+        received.addListener((ListChangeListener<? super DataModel>) listener -> {
+            if (ASCheckBox.isSelected())
+            {
+                tableView.scrollTo(tableView.getItems().size());
+            }
+        });
     }
 
     public void setPort(SerialPort port)
