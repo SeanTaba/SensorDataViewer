@@ -58,6 +58,11 @@ public class TerminalController {
         });
     }
 
+    public void turnAutoScrollOff()
+    {
+        ASCheckBox.setSelected(false);
+    }
+
     public void setPort(SerialPort port)
     {
         this.port = port;

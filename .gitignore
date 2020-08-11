@@ -3,4 +3,5 @@
 *.xml
 .idea
 out
-data
+/src/com/seantaba/data/*.*
+*.dat

@@ -102,6 +102,8 @@ public class Controller {
         controller.setReceived(data);
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        stage.setOnCloseRequest(value ->
+                controller.turnAutoScrollOff());
         stage.show();
     }
 

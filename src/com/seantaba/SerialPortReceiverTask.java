@@ -10,6 +10,7 @@ import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.text.DateFormat;
@@ -27,7 +28,7 @@ public class SerialPortReceiverTask extends Task<Void>
     {
         this.port = port;
         this.list = list;
-        this.dateFormat = new SimpleDateFormat("MM_dd_yy-HH_mm_ss");
+        this.dateFormat = new SimpleDateFormat("(MM_dd_yy)-(HH_mm_ss)");
         this.date = new Date();
     }
 
@@ -80,11 +81,16 @@ public class SerialPortReceiverTask extends Task<Void>
                             list.add(dataModel);
                             try
                             {
-                                outputStream.write(time);
-                                outputStream.write(sensor1);
-                                outputStream.write(sensor2);
-                                outputStream.write(sensor3);
-                                outputStream.write(sensor4);
+                                ByteBuffer buffer = ByteBuffer.allocate(4);
+                                outputStream.write(buffer.putInt(time).array());
+                                buffer.flip();
+                                outputStream.write(buffer.putInt(sensor1).array());
+                                buffer.flip();
+                                outputStream.write(buffer.putInt(sensor2).array());
+                                buffer.flip();
+                                outputStream.write(buffer.putInt(sensor3).array());
+                                buffer.flip();
+                                outputStream.write(buffer.putInt(sensor4).array());
                                 outputStream.flush();
                             } catch (IOException e)
                             {
