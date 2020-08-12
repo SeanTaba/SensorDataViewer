@@ -9,7 +9,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -21,6 +27,10 @@ public class Controller {
     private SerialPort port;
     private final ObservableList<DataModel> data = FXCollections.observableArrayList();
     private SerialPortReceiverTask receiverTask;
+    private final XYChart.Series<String,Number> series1 = new XYChart.Series<>();
+    private final XYChart.Series<String,Number> series2 = new XYChart.Series<>();
+    private final XYChart.Series<String,Number> series3 = new XYChart.Series<>();
+    private final XYChart.Series<String,Number> series4 = new XYChart.Series<>();
 
     @FXML
     private MenuItem menuExit;
@@ -34,7 +44,8 @@ public class Controller {
     private Button testButton;
     @FXML
     private Label statusLabel;
-
+    @FXML
+    private MenuItem menuRawDataLineChart;
 
     @FXML
     public void menuActionHandler(ActionEvent event) throws Exception {
@@ -62,6 +73,9 @@ public class Controller {
         } else if (event.getSource().equals(menuTerminal))
         {
             launchTerminalWindow();
+        } else if (event.getSource().equals(menuRawDataLineChart))
+        {
+            launchRawDataLineChart();
         }
     }
 
@@ -106,6 +120,35 @@ public class Controller {
                 controller.turnAutoScrollOff());
         stage.show();
     }
+    public void launchRawDataLineChart() throws IOException
+    {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("rawdatalinechart.fxml"));
+        Parent root = fxmlLoader.load();
+        Stage stage = new Stage();
+        stage.setTitle("Raw Data Line Chart");
+        CategoryAxis xAxis = new CategoryAxis();
+        xAxis.setLabel("Time (ms)");
+        xAxis.setAnimated(false);
+        NumberAxis yAxis = new NumberAxis();
+        yAxis.setAnimated(false);
+        LineChart<String,Number> lineChart = new LineChart<>(xAxis, yAxis);
+        lineChart.setTitle("Raw Sensor Data");
+        lineChart.setAnimated(false);
+
+        series1.setName("Sensor 1");
+        series2.setName("Sensor 2");
+        series3.setName("Sensor 3");
+        series4.setName("Sensor 4");
+
+        lineChart.getData().add(series1);
+        lineChart.getData().add(series2);
+        lineChart.getData().add(series3);
+        lineChart.getData().add(series4);
+
+        Scene scene = new Scene(lineChart,1000,600);
+        stage.setScene(scene);
+        stage.show();
+    }
 
     public boolean connect()
     {
@@ -113,7 +156,7 @@ public class Controller {
         {
             if (port.openPort())
             {
-                receiverTask = new SerialPortReceiverTask(port, data);
+                receiverTask = new SerialPortReceiverTask(port, data,series1,series2,series3,series4);
                 new Thread(receiverTask).start();
                 return true;
             }

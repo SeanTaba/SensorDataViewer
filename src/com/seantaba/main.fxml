@@ -14,7 +14,12 @@
                     <MenuItem fx:id="menuExit" text="Exit" onAction="#menuActionHandler"/>
                 </Menu>
                 <Menu text="Data">
-                    <MenuItem fx:id="menuTerminal" text="Terminal" disable="false" onAction="#menuActionHandler"/>
+                    <MenuItem fx:id="menuTerminal" text="Terminal" disable="true" onAction="#menuActionHandler"/>
+                </Menu>
+                <Menu text="Charts">
+                    <Menu text="Line Charts">
+                        <MenuItem fx:id="menuRawDataLineChart" text="Raw Data" onAction="#menuActionHandler"/>
+                    </Menu>
                 </Menu>
             </MenuBar>
             <Label fx:id="statusLabel" />

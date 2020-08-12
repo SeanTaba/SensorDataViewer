@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.scene.chart.XYChart;
 
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
@@ -23,13 +24,23 @@ public class SerialPortReceiverTask extends Task<Void>
     private final ObservableList<DataModel> list;
     private final DateFormat dateFormat;
     private final Date date;
+    private final XYChart.Series<String,Number> series1;
+    private final XYChart.Series<String,Number> series2;
+    private final XYChart.Series<String,Number> series3;
+    private final XYChart.Series<String,Number> series4;
+    private static final int WINDOW_WIDTH = 20;
 
-    public SerialPortReceiverTask(SerialPort port, ObservableList<DataModel> list)
+    public SerialPortReceiverTask(SerialPort port, ObservableList<DataModel> list, XYChart.Series<String,Number> series1,
+                                  XYChart.Series<String,Number> series2, XYChart.Series<String,Number> series3, XYChart.Series<String,Number> series4)
     {
         this.port = port;
         this.list = list;
         this.dateFormat = new SimpleDateFormat("(MM_dd_yy)-(HH_mm_ss)");
         this.date = new Date();
+        this.series1 = series1;
+        this.series2 = series2;
+        this.series3 = series3;
+        this.series4 = series4;
     }
 
     @Override
@@ -79,6 +90,17 @@ public class SerialPortReceiverTask extends Task<Void>
                                     new SimpleStringProperty(Integer.toString(sensor1)), new SimpleStringProperty(Integer.toString(sensor2)),
                                     new SimpleStringProperty(Integer.toString(sensor3)), new SimpleStringProperty(Integer.toString(sensor4)));
                             list.add(dataModel);
+
+                            series1.getData().add(new XYChart.Data<>(String.valueOf(time),sensor1));
+                            if (series1.getData().size() > WINDOW_WIDTH) series1.getData().remove(0);
+                            series2.getData().add(new XYChart.Data<>(String.valueOf(time),sensor2));
+                            if (series2.getData().size() > WINDOW_WIDTH) series2.getData().remove(0);
+                            series3.getData().add(new XYChart.Data<>(String.valueOf(time),sensor3));
+                            if (series3.getData().size() > WINDOW_WIDTH) series3.getData().remove(0);
+                            series4.getData().add(new XYChart.Data<>(String.valueOf(time),sensor4));
+                            if (series4.getData().size() > WINDOW_WIDTH) series4.getData().remove(0);
+
+
                             try
                             {
                                 ByteBuffer buffer = ByteBuffer.allocate(4);
