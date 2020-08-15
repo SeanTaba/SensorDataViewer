@@ -24,17 +24,25 @@ public class SerialPortReceiverTask extends Task<Void>
     private final ObservableList<DataModel> list;
     private final DateFormat dateFormat;
     private final Date date;
-    private final XYChart.Series<String,Number> series1;
-    private final XYChart.Series<String,Number> series2;
-    private final XYChart.Series<String,Number> series3;
-    private final XYChart.Series<String,Number> series4;
+    private final XYChart.Series<String, Number> series1;
+    private final XYChart.Series<String, Number> series2;
+    private final XYChart.Series<String, Number> series3;
+    private final XYChart.Series<String, Number> series4;
+    private final XYChart.Series<String, Number> averageSeries1;
+    private final XYChart.Series<String, Number> averageSeries2;
+    private final XYChart.Series<String, Number> averageSeries3;
+    private final XYChart.Series<String, Number> averageSeries4;
     private static final int WINDOW_WIDTH = 20;
 
-    public SerialPortReceiverTask(SerialPort port, ObservableList<DataModel> list, XYChart.Series<String,Number> series1,
-                                  XYChart.Series<String,Number> series2, XYChart.Series<String,Number> series3, XYChart.Series<String,Number> series4)
+    public SerialPortReceiverTask(SerialPort port, ObservableList<DataModel> list, XYChart.Series<String, Number> series1,
+                                  XYChart.Series<String, Number> series2, XYChart.Series<String, Number> series3, XYChart.Series<String, Number> series4, XYChart.Series<String, Number> averageSeries1, XYChart.Series<String, Number> averageSeries2, XYChart.Series<String, Number> averageSeries3, XYChart.Series<String, Number> averageSeries4)
     {
         this.port = port;
         this.list = list;
+        this.averageSeries1 = averageSeries1;
+        this.averageSeries2 = averageSeries2;
+        this.averageSeries3 = averageSeries3;
+        this.averageSeries4 = averageSeries4;
         this.dateFormat = new SimpleDateFormat("(MM_dd_yy)-(HH_mm_ss)");
         this.date = new Date();
         this.series1 = series1;
@@ -59,6 +67,7 @@ public class SerialPortReceiverTask extends Task<Void>
                 if (!port.isOpen())
                 {
                     run = false;
+                    continue;
                 }
                 try
                 {
@@ -91,16 +100,15 @@ public class SerialPortReceiverTask extends Task<Void>
                                     new SimpleStringProperty(Integer.toString(sensor3)), new SimpleStringProperty(Integer.toString(sensor4)));
                             list.add(dataModel);
 
-                            series1.getData().add(new XYChart.Data<>(String.valueOf(time),sensor1));
-                            if (series1.getData().size() > WINDOW_WIDTH) series1.getData().remove(0);
-                            series2.getData().add(new XYChart.Data<>(String.valueOf(time),sensor2));
-                            if (series2.getData().size() > WINDOW_WIDTH) series2.getData().remove(0);
-                            series3.getData().add(new XYChart.Data<>(String.valueOf(time),sensor3));
-                            if (series3.getData().size() > WINDOW_WIDTH) series3.getData().remove(0);
-                            series4.getData().add(new XYChart.Data<>(String.valueOf(time),sensor4));
-                            if (series4.getData().size() > WINDOW_WIDTH) series4.getData().remove(0);
-
-
+                            updateSeries(series1, time, sensor1);
+                            updateSeries(series2, time, sensor2);
+                            updateSeries(series3, time, sensor3);
+                            updateSeries(series4, time, sensor4);
+                            updateAverageSeries(averageSeries1, time, series1);
+                            updateAverageSeries(averageSeries2, time, series2);
+                            updateAverageSeries(averageSeries3, time, series3);
+                            updateAverageSeries(averageSeries4, time, series4);
+//
                             try
                             {
                                 ByteBuffer buffer = ByteBuffer.allocate(4);
@@ -116,7 +124,7 @@ public class SerialPortReceiverTask extends Task<Void>
                                 outputStream.flush();
                             } catch (IOException e)
                             {
-                                e.printStackTrace();
+                                System.out.println(e.getLocalizedMessage());
                             }
                         });
                     }
@@ -135,4 +143,21 @@ public class SerialPortReceiverTask extends Task<Void>
         return null;
     }
 
+    private void updateSeries(XYChart.Series<String, Number> series, int time, int sensor)
+    {
+        series.getData().add(new XYChart.Data<>(String.valueOf(time), sensor));
+        if (series.getData().size() > WINDOW_WIDTH) series.getData().remove(0);
+    }
+
+    private void updateAverageSeries(XYChart.Series<String, Number> averageSeries, int time, XYChart.Series<String, Number> series)
+    {
+        int seriesSize = series.getData().size();
+        double average = 0;
+        for (int i = seriesSize - 1; i > seriesSize - 10; i--)
+        {
+            if (i >= 0) average += ((int) series.getData().get(i).getYValue()) / 10.0;
+        }
+        averageSeries.getData().add(new XYChart.Data<>(String.valueOf(time), average));
+        if (averageSeries.getData().size() > WINDOW_WIDTH) averageSeries.getData().remove(0);
+    }
 }

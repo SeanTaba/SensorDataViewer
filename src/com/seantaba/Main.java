@@ -1,6 +1,7 @@
 package com.seantaba;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,26 +17,24 @@ public class Main extends Application {
         Parent root = fxmlLoader.load();
         controller = fxmlLoader.getController();
         primaryStage.setTitle("Sensor Data Viewer");
+        primaryStage.setOnCloseRequest(event -> {
+            try
+            {
+                controller.stop();
+            } catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+            Platform.exit();
+        });
         Scene scene = new Scene(root);
         scene.setUserData(controller);
         primaryStage.setScene(scene);
         primaryStage.show();
-
     }
 
     public static void main(String[] args) {
         launch(args);
-    }
-
-    @Override
-    public void stop() throws Exception
-    {
-        if (controller.getPort() != null) {
-            if (controller.getPort().isOpen()) {
-                controller.getPort().closePort();
-            }
-        }
-        super.stop();
     }
 
     public Controller getController() {

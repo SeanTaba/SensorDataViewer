@@ -1,10 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.TitledPane?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.seantaba.RawDataLineChartController"
-            prefHeight="400.0" prefWidth="600.0">
+            prefHeight="800.0" prefWidth="1000.0" style="-fx-padding: 10 10 10 10">
+
+    <right>
+        <VBox>
+            <TitledPane text="Raw Data" collapsible="false" style="-fx-padding: 10 10 10 10" alignment="CENTER">
+                <VBox style="-fx-padding: 10 10 10 10; -fx-spacing: 10; -fx-font-weight: bold">
+                    <CheckBox fx:id="sensor1CheckBox" text="Sensor 1" alignment="CENTER" selected="true" onAction="#sensorChoiceHandler"/>
+                    <CheckBox fx:id="sensor2CheckBox" text="Sensor 2" alignment="CENTER" selected="true" onAction="#sensorChoiceHandler"/>
+                    <CheckBox fx:id="sensor3CheckBox" text="Sensor 3" alignment="CENTER" selected="true" onAction="#sensorChoiceHandler"/>
+                    <CheckBox fx:id="sensor4CheckBox" text="Sensor 4" alignment="CENTER" selected="true" onAction="#sensorChoiceHandler"/>
+                </VBox>
+            </TitledPane>
+            <TitledPane text="Average Data" collapsible="false" style="-fx-padding: 10 10 10 10" alignment="CENTER">
+                <VBox style="-fx-padding: 10 10 10 10; -fx-spacing: 10; -fx-font-weight: bold">
+                    <CheckBox fx:id="sensor1AverageCheckBox" text="Sensor 1" alignment="CENTER" selected="true" onAction="#sensorChoiceHandler"/>
+                    <CheckBox fx:id="sensor2AverageCheckBox" text="Sensor 2" alignment="CENTER" selected="true" onAction="#sensorChoiceHandler"/>
+                    <CheckBox fx:id="sensor3AverageCheckBox" text="Sensor 3" alignment="CENTER" selected="true" onAction="#sensorChoiceHandler"/>
+                    <CheckBox fx:id="sensor4AverageCheckBox" text="Sensor 4" alignment="CENTER" selected="true" onAction="#sensorChoiceHandler"/>
+                </VBox>
+            </TitledPane>
+        </VBox>
+
+    </right>
+    <center>
+       <LineChart fx:id="lineChart">
+           <xAxis>
+               <CategoryAxis fx:id="lineChartXAxis" side="BOTTOM"/>
+           </xAxis>
+           <yAxis>
+               <NumberAxis fx:id="lineChartYAxis" side="LEFT" autoRanging="false" upperBound="500"/>
+           </yAxis>
+       </LineChart>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER_LEFT" style="-fx-padding: 10 10 10 10">
+            <CheckBox text="Live"/>
+        </HBox>
+    </bottom>
 
 </BorderPane>
