@@ -63,7 +63,7 @@ public class ConnectionController
             port = listView.getSelectionModel().getSelectedItem();
             if (port != null)
             {
-                Controller mainController = (Controller) buttonConnect.getScene().getUserData();
+                MainController mainController = (MainController) buttonConnect.getScene().getUserData();
                 mainController.setPort(port);
             }
             ((Stage) buttonConnect.getScene().getWindow()).close();

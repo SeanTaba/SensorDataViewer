@@ -1,19 +1,20 @@
 package com.seantaba;
 
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 
 import java.io.Serializable;
 
 public class DataModel implements Serializable
 {
-    private final SimpleStringProperty time;
-    private final SimpleStringProperty sensor1;
-    private final SimpleStringProperty sensor2;
-    private final SimpleStringProperty sensor3;
-    private final SimpleStringProperty sensor4;
+    private final SimpleLongProperty time;
+    private final SimpleIntegerProperty sensor1;
+    private final SimpleIntegerProperty sensor2;
+    private final SimpleIntegerProperty sensor3;
+    private final SimpleIntegerProperty sensor4;
 
-    public DataModel(SimpleStringProperty time, SimpleStringProperty sensor1, SimpleStringProperty sensor2,
-                     SimpleStringProperty sensor3, SimpleStringProperty sensor4)
+    public DataModel(SimpleLongProperty time, SimpleIntegerProperty sensor1, SimpleIntegerProperty sensor2,
+                     SimpleIntegerProperty sensor3, SimpleIntegerProperty sensor4)
     {
         this.time = time;
         this.sensor1 = sensor1;
@@ -22,43 +23,71 @@ public class DataModel implements Serializable
         this.sensor4 = sensor4;
     }
 
-    public String getTime() {
+    public Long getTime() {
         return time.get();
     }
 
-    public SimpleStringProperty timeProperty() {
+    public SimpleLongProperty timeProperty() {
         return time;
     }
 
-    public String getSensor1() {
+    public int getSensor1()
+    {
         return sensor1.get();
     }
 
-    public SimpleStringProperty sensor1Property() {
+    public SimpleIntegerProperty sensor1Property()
+    {
         return sensor1;
     }
 
-    public String getSensor2() {
+    public void setSensor1(int sensor1)
+    {
+        this.sensor1.set(sensor1);
+    }
+
+    public int getSensor2()
+    {
         return sensor2.get();
     }
 
-    public SimpleStringProperty sensor2Property() {
+    public SimpleIntegerProperty sensor2Property()
+    {
         return sensor2;
     }
 
-    public String getSensor3() {
+    public void setSensor2(int sensor2)
+    {
+        this.sensor2.set(sensor2);
+    }
+
+    public int getSensor3()
+    {
         return sensor3.get();
     }
 
-    public SimpleStringProperty sensor3Property() {
+    public SimpleIntegerProperty sensor3Property()
+    {
         return sensor3;
     }
 
-    public String getSensor4() {
+    public void setSensor3(int sensor3)
+    {
+        this.sensor3.set(sensor3);
+    }
+
+    public int getSensor4()
+    {
         return sensor4.get();
     }
 
-    public SimpleStringProperty sensor4Property() {
+    public SimpleIntegerProperty sensor4Property()
+    {
         return sensor4;
+    }
+
+    public void setSensor4(int sensor4)
+    {
+        this.sensor4.set(sensor4);
     }
 }

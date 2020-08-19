@@ -2,7 +2,8 @@ package com.seantaba;
 
 import com.fazecast.jSerialComm.SerialPort;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.scene.chart.XYChart;
@@ -21,34 +22,18 @@ import java.util.Date;
 public class SerialPortReceiverTask extends Task<Void>
 {
     private final SerialPort port;
-    private final ObservableList<DataModel> list;
+    private final ObservableList<DataModel> data;
     private final DateFormat dateFormat;
     private final Date date;
-    private final XYChart.Series<String, Number> series1;
-    private final XYChart.Series<String, Number> series2;
-    private final XYChart.Series<String, Number> series3;
-    private final XYChart.Series<String, Number> series4;
-    private final XYChart.Series<String, Number> averageSeries1;
-    private final XYChart.Series<String, Number> averageSeries2;
-    private final XYChart.Series<String, Number> averageSeries3;
-    private final XYChart.Series<String, Number> averageSeries4;
     private static final int WINDOW_WIDTH = 20;
 
-    public SerialPortReceiverTask(SerialPort port, ObservableList<DataModel> list, XYChart.Series<String, Number> series1,
-                                  XYChart.Series<String, Number> series2, XYChart.Series<String, Number> series3, XYChart.Series<String, Number> series4, XYChart.Series<String, Number> averageSeries1, XYChart.Series<String, Number> averageSeries2, XYChart.Series<String, Number> averageSeries3, XYChart.Series<String, Number> averageSeries4)
+
+    public SerialPortReceiverTask(SerialPort port, ObservableList<DataModel> data)
     {
         this.port = port;
-        this.list = list;
-        this.averageSeries1 = averageSeries1;
-        this.averageSeries2 = averageSeries2;
-        this.averageSeries3 = averageSeries3;
-        this.averageSeries4 = averageSeries4;
+        this.data = data;
         this.dateFormat = new SimpleDateFormat("(MM_dd_yy)-(HH_mm_ss)");
         this.date = new Date();
-        this.series1 = series1;
-        this.series2 = series2;
-        this.series3 = series3;
-        this.series4 = series4;
     }
 
     @Override
@@ -95,20 +80,11 @@ public class SerialPortReceiverTask extends Task<Void>
 
                         Platform.runLater(() ->
                         {
-                            DataModel dataModel = new DataModel(new SimpleStringProperty(Long.toString(time)),
-                                    new SimpleStringProperty(Integer.toString(sensor1)), new SimpleStringProperty(Integer.toString(sensor2)),
-                                    new SimpleStringProperty(Integer.toString(sensor3)), new SimpleStringProperty(Integer.toString(sensor4)));
-                            list.add(dataModel);
+                            DataModel dataModel = new DataModel(new SimpleLongProperty(time),
+                                    new SimpleIntegerProperty(sensor1), new SimpleIntegerProperty(sensor2),
+                                    new SimpleIntegerProperty(sensor3), new SimpleIntegerProperty(sensor4));
+                            data.add(dataModel);
 
-                            updateSeries(series1, time, sensor1);
-                            updateSeries(series2, time, sensor2);
-                            updateSeries(series3, time, sensor3);
-                            updateSeries(series4, time, sensor4);
-                            updateAverageSeries(averageSeries1, time, series1);
-                            updateAverageSeries(averageSeries2, time, series2);
-                            updateAverageSeries(averageSeries3, time, series3);
-                            updateAverageSeries(averageSeries4, time, series4);
-//
                             try
                             {
                                 ByteBuffer buffer = ByteBuffer.allocate(4);

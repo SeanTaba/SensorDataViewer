@@ -9,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -19,7 +18,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 
-public class Controller {
+public class MainController
+{
 
     private SerialPort port;
     private final ObservableList<DataModel> data = FXCollections.observableArrayList();
@@ -28,14 +28,6 @@ public class Controller {
     private Thread serialDataReceiver;
     private Stage terminalStage;
     private Stage rawDataChartStage;
-    private final XYChart.Series<String,Number> series1 = new XYChart.Series<>();
-    private final XYChart.Series<String,Number> series2 = new XYChart.Series<>();
-    private final XYChart.Series<String,Number> series3 = new XYChart.Series<>();
-    private final XYChart.Series<String,Number> series4 = new XYChart.Series<>();
-    private final XYChart.Series<String,Number> averageSeries1 = new XYChart.Series<>();
-    private final XYChart.Series<String,Number> averageSeries2 = new XYChart.Series<>();
-    private final XYChart.Series<String,Number> averageSeries3 = new XYChart.Series<>();
-    private final XYChart.Series<String,Number> averageSeries4 = new XYChart.Series<>();
 
     @FXML
     private MenuItem menuExit;
@@ -133,7 +125,7 @@ public class Controller {
         rawDataChartStage = new Stage();
         rawDataChartStage.setTitle("Raw Data Line Chart");
         rawDataLineChartController = fxmlLoader.getController();
-        rawDataLineChartController.setup(series1, series2, series3, series4,averageSeries1, averageSeries2, averageSeries3, averageSeries4);
+        rawDataLineChartController.setup(data);
         Scene scene = new Scene(root);
         rawDataChartStage.setScene(scene);
         rawDataChartStage.show();
@@ -145,7 +137,7 @@ public class Controller {
         {
             if (port.openPort())
             {
-                receiverTask = new SerialPortReceiverTask(port, data, series1, series2, series3, series4, averageSeries1, averageSeries2, averageSeries3, averageSeries4);
+                receiverTask = new SerialPortReceiverTask(port, data);
                 serialDataReceiver = new Thread(receiverTask);
                 serialDataReceiver.start();
                 return true;

@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    private Controller controller;
+    private MainController controller;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -37,7 +37,7 @@ public class Main extends Application {
         launch(args);
     }
 
-    public Controller getController() {
+    public MainController getController() {
         return controller;
     }
 }

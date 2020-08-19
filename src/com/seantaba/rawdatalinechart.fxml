@@ -8,6 +8,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.Label?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.seantaba.RawDataLineChartController"
@@ -40,13 +42,14 @@
                <CategoryAxis fx:id="lineChartXAxis" side="BOTTOM"/>
            </xAxis>
            <yAxis>
-               <NumberAxis fx:id="lineChartYAxis" side="LEFT" autoRanging="false" upperBound="500"/>
+               <NumberAxis fx:id="lineChartYAxis" side="LEFT" upperBound="300"/>
            </yAxis>
        </LineChart>
     </center>
     <bottom>
-        <HBox alignment="CENTER_LEFT" style="-fx-padding: 10 10 10 10">
-            <CheckBox text="Live"/>
+        <HBox alignment="CENTER" style="-fx-padding: 10 10 10 10" spacing="10">
+            <Label text="Samples to Show"/>
+            <Slider fx:id="windowWidthSlider" prefWidth="500" max="100" min="5" majorTickUnit="10" minorTickCount="10" showTickMarks="true" showTickLabels="true" snapToTicks="true" onMouseReleased="#sliderHandler"/>
         </HBox>
     </bottom>
 
